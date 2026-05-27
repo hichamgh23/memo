@@ -1,0 +1,76 @@
+{% extends "reservations/base.html" %}
+
+{% block title %}Liste des spectacles{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 text-primary fw-bold mb-0">
+        <i class="bi bi-collection-play me-2"></i>Spectacles disponibles
+    </h1>
+    <span class="badge bg-primary rounded-pill fs-6">{{ shows|length }} spectacle(s)</span>
+</div>
+
+<!-- Filtre par artiste -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body py-3">
+        <form method="get" action="{% url 'show_list' %}" class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label class="col-form-label fw-semibold">
+                    <i class="bi bi-funnel me-1"></i>Filtrer par artiste :
+                </label>
+            </div>
+            <div class="col-auto">
+                <select name="artist" class="form-select" onchange="this.form.submit()">
+                    <option value="">— Tous les artistes —</option>
+                    {% for artist in artists %}
+                        <option value="{{ artist.id }}"
+                            {% if selected_artist_id == artist.id|stringformat:"s" %}selected{% endif %}>
+                            {{ artist.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Liste des spectacles -->
+{% if shows %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for show in shows %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">
+                        <i class="bi bi-star-fill text-warning me-2"></i>{{ show.name }}
+                    </h5>
+                    <p class="card-text text-muted mb-1">
+                        <i class="bi bi-calendar3 me-1"></i>{{ show.date|date:"d/m/Y à H:i" }}
+                    </p>
+                    <p class="card-text text-muted mb-2">
+                        <i class="bi bi-person-seat me-1"></i>{{ show.available_seats }} places disponibles
+                    </p>
+                    {% if show.artist %}
+                        <span class="badge bg-info text-dark">
+                            <i class="bi bi-person-badge me-1"></i>{{ show.artist.name }}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{% url 'show_detail' show.id %}" class="btn btn-primary btn-sm w-100">
+                        <i class="bi bi-eye me-1"></i>Voir le spectacle
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info d-flex align-items-center">
+        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+        Aucun spectacle disponible.
+    </div>
+{% endif %}
+
+{% endblock %}

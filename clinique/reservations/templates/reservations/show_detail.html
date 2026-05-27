@@ -1,0 +1,97 @@
+{% extends "reservations/base.html" %}
+
+{% block title %}{{ show.name }}{% endblock %}
+
+{% block content %}
+
+<!-- En-tête spectacle -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <h1 class="h3 text-primary fw-bold">
+            <i class="bi bi-star-fill text-warning me-2"></i>{{ show.name }}
+        </h1>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <p class="mb-1 text-muted"><i class="bi bi-calendar3 me-2"></i>
+                    <strong>Date :</strong> {{ show.date|date:"d/m/Y à H:i" }}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p class="mb-1 text-muted"><i class="bi bi-person-seat me-2"></i>
+                    <strong>Places :</strong> {{ show.available_seats }}
+                </p>
+            </div>
+            {% if show.artist %}
+            <div class="col-md-4">
+                <p class="mb-1 text-muted"><i class="bi bi-person-badge me-2"></i>
+                    <strong>Artiste :</strong>
+                    <a href="{% url 'videos_by_artist' show.artist.name %}" class="badge bg-info text-dark text-decoration-none">
+                        {{ show.artist.name }}
+                    </a>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Section vidéos -->
+<h2 class="h4 text-primary mb-3">
+    <i class="bi bi-camera-video me-2"></i>Vidéos du spectacle
+</h2>
+
+{% if videos %}
+    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+        {% for video in videos %}
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="card-title text-secondary">
+                        <i class="bi bi-play-circle-fill text-danger me-1"></i>{{ video.title }}
+                    </h6>
+                    <video class="w-100 rounded" controls style="max-height:200px;">
+                        <source src="{{ video.video_url }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-warning d-flex align-items-center mb-4">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+        Aucune vidéo pour ce spectacle.
+    </div>
+{% endif %}
+
+<!-- Formulaire admin uniquement -->
+{% if form %}
+    <div class="card border-warning shadow-sm mb-4">
+        <div class="card-header bg-warning text-dark fw-bold">
+            <i class="bi bi-shield-lock-fill me-2"></i>Ajouter une vidéo — Zone Administrateur
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'add_video' show.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_title" class="form-label fw-semibold">Titre</label>
+                    {{ form.title }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_video_url" class="form-label fw-semibold">URL de la vidéo</label>
+                    {{ form.video_url }}
+                </div>
+                <button type="submit" class="btn btn-warning fw-bold">
+                    <i class="bi bi-plus-circle me-1"></i>Ajouter la vidéo
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+<a href="{% url 'show_list' %}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Retour à la liste
+</a>
+
+{% endblock %}

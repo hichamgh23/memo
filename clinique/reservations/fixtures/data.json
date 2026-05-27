@@ -1,0 +1,73 @@
+[
+    {
+        "model": "reservations.artist",
+        "pk": 1,
+        "fields": {
+            "name": "Coldplay"
+        }
+    },
+    {
+        "model": "reservations.artist",
+        "pk": 2,
+        "fields": {
+            "name": "Dua Lipa"
+        }
+    },
+    {
+        "model": "reservations.show",
+        "pk": 1,
+        "fields": {
+            "name": "Coldplay World Tour",
+            "date": "2024-07-01T20:00:00Z",
+            "available_seats": 100,
+            "artist": 1
+        }
+    },
+    {
+        "model": "reservations.show",
+        "pk": 2,
+        "fields": {
+            "name": "Coldplay Acoustic Night",
+            "date": "2024-08-15T19:30:00Z",
+            "available_seats": 50,
+            "artist": 1
+        }
+    },
+    {
+        "model": "reservations.show",
+        "pk": 3,
+        "fields": {
+            "name": "Dua Lipa Future Nostalgia",
+            "date": "2024-09-10T21:00:00Z",
+            "available_seats": 200,
+            "artist": 2
+        }
+    },
+    {
+        "model": "reservations.video",
+        "pk": 1,
+        "fields": {
+            "show": 1,
+            "title": "Yellow - Live",
+            "video_url": "https://youtu.be/abc123"
+        }
+    },
+    {
+        "model": "reservations.video",
+        "pk": 2,
+        "fields": {
+            "show": 1,
+            "title": "Fix You - Live",
+            "video_url": "https://youtu.be/def456"
+        }
+    },
+    {
+        "model": "reservations.video",
+        "pk": 3,
+        "fields": {
+            "show": 3,
+            "title": "Levitating - Live",
+            "video_url": "https://youtu.be/ghi789"
+        }
+    }
+]
